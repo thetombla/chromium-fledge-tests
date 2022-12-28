@@ -3,10 +3,9 @@ FROM ubuntu:22.04
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         curl ca-certificates software-properties-common unzip libnss3-tools \
-        xorg xserver-xorg-legacy xfonts-scalable xfonts-100dpi xfonts-75dpi x11-xfs-utils \
+        xorg xserver-xorg-legacy xfonts-scalable xfonts-100dpi xfonts-75dpi x11-xfs-utils xterm \
         `# we use actual x server as chromium headless mode is buggy` \
         tigervnc-common tigervnc-standalone-server tigervnc-tools tigervnc-xorg-extension \
-        `# tightvncpasswd tightvncserver` \
         python3 python3-pip \
         `# chromium dependencies` \
         libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
@@ -15,6 +14,12 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*; \
     useradd -m -s /bin/bash -u 11031 usertd; \
     mkdir -p /run/systemd && echo 'docker' > /run/systemd/container
+
+USER root
+RUN mkdir -p /etc/gdm3; \
+    chmod 755 /etc/gdm3; \
+    printf "%s\n%s\n" '[daemon]' 'WaylandEnable=false' >/etc/gdm3/custom.conf; \
+    chmod 644 /etc/gdm3/custom.conf;
 
 USER usertd
 WORKDIR /home/usertd
@@ -30,8 +35,6 @@ RUN mkdir -p /home/usertd/.pki/nssdb && \
 
 WORKDIR /home/usertd/tests
 VOLUME /home/usertd/logs
-
-# RUN sudo mkdir -p /etc/gdm3; sudo printf "%s\n%s\n" '[daemon]' 'WaylandEnable=false' >/etc/gdm3/custom.conf
 
 # This is a hack due to https://bugs.chromium.org/p/chromium/issues/detail?id=1229652
 RUN mkdir -p ~/.vnc && echo turtledove | vncpasswd -f > ~/.vnc/passwd && touch ~/.Xauthority
