@@ -5,7 +5,7 @@ RUN apt-get update && \
         curl ca-certificates software-properties-common unzip libnss3-tools \
         xorg xterm \
         `# we use actual x server as chromium headless mode is buggy` \
-        tigervnc-common tigervnc-standalone-server tigervnc-tools tigervnc-xorg-extension \
+        tigervnc-common tigervnc-standalone-server tigervnc-tools \
         python3 python3-pip \
         `# chromium dependencies` \
         libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
