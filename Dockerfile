@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         curl ca-certificates software-properties-common unzip libnss3-tools \
-        xorg xserver-xorg-legacy xfonts-scalable xfonts-100dpi xfonts-75dpi x11-xfs-utils xterm \
+        xorg xterm \
         `# we use actual x server as chromium headless mode is buggy` \
         tigervnc-common tigervnc-standalone-server tigervnc-tools tigervnc-xorg-extension \
         python3 python3-pip \
