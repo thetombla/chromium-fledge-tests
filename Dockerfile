@@ -15,12 +15,6 @@ RUN apt-get update && \
     useradd -m -s /bin/bash -u 11031 usertd; \
     mkdir -p /run/systemd && echo 'docker' > /run/systemd/container
 
-USER root
-RUN mkdir -p /etc/gdm3; \
-    chmod 755 /etc/gdm3; \
-    printf "%s\n%s\n" '[daemon]' 'WaylandEnable=false' >/etc/gdm3/custom.conf; \
-    chmod 644 /etc/gdm3/custom.conf;
-
 USER usertd
 WORKDIR /home/usertd
 
